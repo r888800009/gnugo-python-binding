@@ -1,0 +1,1 @@
+# gnugo-python-binding
