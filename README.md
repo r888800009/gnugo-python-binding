@@ -14,7 +14,27 @@ The [Free Software Foundation](https://www.fsf.org/) owns the copyright of GNU G
 Problems caused by using third-party libraries may not be officially supported,
 and the use needs to be considered [Restrictions](https://www.gnu.org/software/gnugo/gnugo_1.html#SEC3)
 
+- gnugo_python/
+    - ./build_tools.py
+    - ./gnugo_ctype.py 
+    - ./gnugo_python.py
+- ./tests
+
+## roadmap
+- board and go engine (libboard.a, libengine.a)
+- libsgf.a It is not planned to support it now. The existing python library is enough
+to run 600k games in a reasonable time. For machine learning training data, pre-processing
+and saving should be enough.
+
+This wrapper is mainly developed and tested on `*nix`. The low-level compiler
+linker may cause the wrapper to be non available. It is not planned to support
+windows. [WSL](https://learn.microsoft.com/en-us/windows/wsl/) can be used instead.
+
 # Dependency
+for build
+```
+clang and gcc
+```
 
 for gnugo
 ```
@@ -36,6 +56,26 @@ gnugo native API
 
 Also provides several functions to convert to the format used by gnugo
 - `color2gnucolor()`
-- `xy2gnu_pos()`
+
+Note: The gnugo-3.8 version seems to have missing some APIs described in the docs,
+Some APIs described in the docs may not appear in the symbols table, so it is recommended
+to read the [gnugo source code](https://www.gnu.org/software/gnugo/download.html)
+directly to understand the interface.
+
+## ./engine/board.h
+- `POS(x, y)`
+- `I(pos)`
+- `J(pos)`
+
+## ./engine/gnugo.h
+- `MIN_BOARD`
+- `MAX_BOARD`
+
+## Example
 
 Pull requests are also welcome
+
+# Evaluation
+
+# Troubleshoot
+
