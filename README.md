@@ -24,10 +24,16 @@ for gnugo
 ncurses
 ```
 
+python binding
+```
 python3.10
+requests
+```
+
+Also see [requirements.txt](./requirements.txt)
 
 # Build
-GNUGoWrapper will use the functions in `./gnugo_python/build_tools.py` to
+`GNUGoWrapper` will use the functions in `./gnugo_python/build_tools.py` to
 download and compile gnu go in construction.
 
 Make sure you have installed the compilation tools and dependencies required by gnugo,
