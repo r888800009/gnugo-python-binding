@@ -13,23 +13,6 @@ This library is a third-party library and is not part of the official GNU GO.
 The [Free Software Foundation](https://www.fsf.org/) owns the copyright of GNU GO.
 Problems caused by using third-party libraries may not be officially supported,
 and the use needs to be considered [Restrictions](https://www.gnu.org/software/gnugo/gnugo_1.html#SEC3)
-
-- gnugo_python/
-    - ./build_tools.py
-    - ./gnugo_ctype.py 
-    - ./gnugo_python.py
-- ./tests
-
-## roadmap
-- board and go engine (libboard.a, libengine.a)
-- libsgf.a It is not planned to support it now. The existing python library is enough
-to run 600k games in a reasonable time. For machine learning training data, pre-processing
-and saving should be enough.
-
-This wrapper is mainly developed and tested on `*nix`. The low-level compiler
-linker may cause the wrapper to be non available. It is not planned to support
-windows. [WSL](https://learn.microsoft.com/en-us/windows/wsl/) can be used instead.
-
 # Dependency
 for build
 ```
@@ -44,6 +27,15 @@ ncurses
 python3.10
 
 # Build
+GNUGoWrapper will use the functions in `./gnugo_python/build_tools.py` to
+download and compile gnu go in construction.
+
+Make sure you have installed the compilation tools and dependencies required by gnugo,
+buildtools.py will download and decompress the source code of gnugo in your project 
+directory for compilation.
+
+This tool will convert the `.a` files compiled by gnugo into `.so` files, 
+allowing python to perform dynamic linking during execution.
 
 # Usage
 This repository provides several commonly used APIs, you can refer to the documentation of GNU GO, or related header files.
@@ -73,9 +65,26 @@ directly to understand the interface.
 
 ## Example
 
+# Development
+pytest
+
+## Files 
+- gnugo_python/
+    - ./build_tools.py
+    - ./gnugo_ctypes.py 
+    - ./gnugo_python.py
+- ./tests
+
+## Roadmap
+- board and go engine (`libboard.a`, `libengine.a`)
+- `libsgf.a` It is not planned to support it now. The [existing python library](https://github.com/mattheww/sgfmill) is enough
+to run 600k games in a reasonable time. For machine learning training data, pre-processing and saving should be enough.
+
+This wrapper is mainly developed and tested on `*nix`. The low-level compiler
+linker may cause the wrapper to be non available. It is not planned to support
+windows. [WSL](https://learn.microsoft.com/en-us/windows/wsl/) can be used instead.
+
 Pull requests are also welcome
 
 # Evaluation
-
-# Troubleshoot
 
