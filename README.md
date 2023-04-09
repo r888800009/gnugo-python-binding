@@ -21,8 +21,14 @@ clang and gcc
 
 for gnugo
 ```
-ncurses
+# linux
+sudo pacman -S ncurses
+sudo apt install libncurses-dev
+
+# macos
+brew install ncurses
 ```
+Also following [GNU Go Documentation: 2. Installation](https://www.gnu.org/software/gnugo/gnugo_2.html#SEC8)
 
 python binding
 ```
