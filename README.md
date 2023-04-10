@@ -6,6 +6,7 @@ In addition, python binding can avoid IPC overhead, such as using popen to wrap 
 Actually running two Processes, the middle process will reduce performance.
 
 gnugo python binding can load the gnugo library into the same address space to improve performance.
+This project mainly uses [pyclibrary](https://github.com/MatthieuDartiailh/pyclibrary) to translate c header and bind.
 
 Note:
 
@@ -13,6 +14,7 @@ This library is a third-party library and is not part of the official GNU GO.
 The [Free Software Foundation](https://www.fsf.org/) owns the copyright of GNU GO.
 Problems caused by using third-party libraries may not be officially supported,
 and the use needs to be considered [Restrictions](https://www.gnu.org/software/gnugo/gnugo_1.html#SEC3)
+
 # Dependency
 for build
 ```
@@ -33,6 +35,7 @@ Also following [GNU Go Documentation: 2. Installation](https://www.gnu.org/softw
 python binding
 ```
 python3.10
+pyclibrary
 requests
 ```
 
@@ -53,6 +56,46 @@ allowing python to perform dynamic linking during execution.
 This repository provides several commonly used APIs, you can refer to the documentation of GNU GO, or related header files.
 - [GNU Go Documentation: 17. Application Programmers Interface to GNU Go](https://www.gnu.org/software/gnugo/gnugo_17.html)
 
+Currently available two interfaces,
+The interface provided by [pyclibrary](https://github.com/MatthieuDartiailh/pyclibrary) (`gnugo_python.gnugo`),
+another [ctypes CDLL](https://docs.python.org/3/library/ctypes.html#ctypes.CDLL) interface (`gnugo_python.gnugo_fast`), the former will check the ABI,
+in some cases, the performance will be poor, the latter can directly call the CDLL interface,
+the disadvantage is that you need to pass the ABI yourself Structure 
+(However, in the case of APIs using some basic data types, conversion may not be required,
+But you may need to manually bind `argtypes` `restype`)
+
+```python
+from gnugo_python.gnugo_python.gnugo_python import *
+from gnugo_python import gnugo, gnugo_fast
+```
+
+Currently, the two interfaces of CDLL are shared (but not guaranteed in the future),
+so you can decide which interface to call according to your needs.
+
+To get score, we can do it in two ways
+```
+# manual binding, must assign restype
+gnugo_fast.gnugo_estimate_score.restype = ctypes.c_float # only need to be set once
+score = gnugo_fast.gnugo_estimate_score(None, None)
+
+# pyclibrary calling
+score, (upper, lower) = gnugo.gnugo_estimate_score()
+print("upper bound {}, lower bound {}".format(upper, lower))
+```
+
+Also see [PyCLibrary documentation](https://pyclibrary.readthedocs.io/en/latest/get_started/basic_usage.html#calling-functions)
+
+To play, We can check and make a move.
+```python
+from gnugo_python import *
+
+player = WHITE
+legal = gnugo_fast.is_legal(POS(x, y), player)
+if legal:
+    gnugo.play_move(POS(x, y), color2gnucolor(player)
+```
+Also see [Basic Data Structures in the Engine](https://www.gnu.org/software/gnugo/gnugo_17.html#SEC182)
+ 
 gnugo native API
 - `init_gnugo()`
 - `gnugo_clear_board()`
@@ -83,9 +126,9 @@ pytest
 ## Files 
 - gnugo_python/
     - ./build_tools.py
-    - ./gnugo_ctypes.py 
     - ./gnugo_python.py
 - ./tests
+    - ./test_gnugo_python.py
 
 ## Roadmap
 - board and go engine (`libboard.a`, `libengine.a`)
