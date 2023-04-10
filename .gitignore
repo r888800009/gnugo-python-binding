@@ -1,1 +1,5 @@
 .README.md.swp
+.vscode
+.pytest_cache
+gnugo*.tar.gz
+gnugo-*

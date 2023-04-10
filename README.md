@@ -56,6 +56,11 @@ allowing python to perform dynamic linking during execution.
 This repository provides several commonly used APIs, you can refer to the documentation of GNU GO, or related header files.
 - [GNU Go Documentation: 17. Application Programmers Interface to GNU Go](https://www.gnu.org/software/gnugo/gnugo_17.html)
 
+Note: The gnugo-3.8 version seems to have missing some APIs described in the docs,
+Some APIs described in the docs may not appear in the symbols table, so it is recommended
+to read the [gnugo source code](https://www.gnu.org/software/gnugo/download.html)
+directly to understand the interface.
+
 Currently available two interfaces,
 The interface provided by [pyclibrary](https://github.com/MatthieuDartiailh/pyclibrary) (`gnugo_python.gnugo`),
 another [ctypes CDLL](https://docs.python.org/3/library/ctypes.html#ctypes.CDLL) interface (`gnugo_python.gnugo_fast`), the former will check the ABI,
@@ -73,7 +78,7 @@ Currently, the two interfaces of CDLL are shared (but not guaranteed in the futu
 so you can decide which interface to call according to your needs.
 
 To get score, we can do it in two ways
-```
+```python
 # manual binding, must assign restype
 gnugo_fast.gnugo_estimate_score.restype = ctypes.c_float # only need to be set once
 score = gnugo_fast.gnugo_estimate_score(None, None)
@@ -103,11 +108,6 @@ gnugo native API
 
 Also provides several functions to convert to the format used by gnugo
 - `color2gnucolor()`
-
-Note: The gnugo-3.8 version seems to have missing some APIs described in the docs,
-Some APIs described in the docs may not appear in the symbols table, so it is recommended
-to read the [gnugo source code](https://www.gnu.org/software/gnugo/download.html)
-directly to understand the interface.
 
 ## ./engine/board.h
 - `POS(x, y)`
